@@ -11,3 +11,5 @@
 //export const Tab3Root = 'SettingsPage';
 
 export const HomePage = "TodosPage";
+export const TodosPage = "TodosPage";
+export const TodosDonePage = "TodosDonePage";
