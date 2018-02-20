@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the TodoDataProvider provider.
@@ -10,8 +10,14 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TodoDataProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello TodoDataProvider Provider');
+  constructor(private storage: Storage) {
   }
 
+  save(todos: any){
+    this.storage.set('todos', todos);
+  }
+
+  getData() {
+    return this.storage.get('todos');
+  }
 }
