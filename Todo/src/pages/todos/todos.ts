@@ -32,12 +32,6 @@ export class TodosPage {
     });
   }
 
-  todoSwipe(event, todo) {
-    console.log("HEY I'm deleting this");
-    console.log(todo);
-    this.removeTodo(todo);
-  }
-
   addTodoFloatingActionButtonPressed(event) {
     let todoCreateModal = this.modalCtrl.create('TodoCreatePage');
     todoCreateModal.onDidDismiss(data => {
@@ -58,11 +52,9 @@ export class TodosPage {
   }
 
   removeTodo(todo) {
-    console.log("todosss removed Todo", todo);
     this.todos.forEach( (item, index) => {
      if(item === todo) this.todos.splice(index,1);
    });
-
    this.todoDataProv.save(this.todos);
   }
 
