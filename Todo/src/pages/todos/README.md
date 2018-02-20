@@ -1,0 +1,4 @@
+# TodosPage
+
+1. Delete moet task done worden.
+2. Lijst moet sorteerbaar zijn a.d.h.v. drags.
