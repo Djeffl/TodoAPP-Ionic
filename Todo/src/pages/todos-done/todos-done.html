@@ -14,14 +14,15 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list>
+    <ion-list-header>Date</ion-list-header>
     <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
 
         <button ion-item (tap)="todoTap($event, todo)">
             {{todo.name}}
             <div class="item-note" item-end>
-            {{todo.time}}
+            {{todo.time}} - {{ todo.completedAt }}
             </div>
           </button>
       <ion-item-options side="right">
