@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { TodoDataProvider } from '../../providers/todo-data/todo-data';
 import { Todo } from '../../models/todo';
+import { reorderArray } from 'ionic-angular';
 
 /**
  * Generated class for the TodosPage page.
@@ -44,6 +45,7 @@ export class TodosPage {
 
   updateTodo(todo) {
     todo.done = true;
+    todo.completedAt = new Date();
     this.todoDataProv.update(todo).then(() => {
       this.todoDataProv.getTodosNotDone().then((todos) => {
         this.todos = todos;
@@ -83,6 +85,14 @@ export class TodosPage {
       // positive
       this.updateTodo(todo);
     }
+  }
+
+  reorderItems(indexes) {
+    this.todos = reorderArray(this.todos, indexes);
+
+    // TODO: Save new ordered list
+    //this.save
+
   }
 
 }
