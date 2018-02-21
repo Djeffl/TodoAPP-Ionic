@@ -22,9 +22,13 @@
             </div>
           </button>
       <ion-item-options side="right">
-        <button expandable (click)="removeTodoEvent($event, todo)" ion-button>
+        <button color="danger" (click)="deleteEvent($event, todo)" ion-button>
           <ion-icon name="trash"></ion-icon>
           Delete
+        </button>
+        <button expandable ion-button (click)="completeEvent($event, todo)">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Done
         </button>
       </ion-item-options>
     </ion-item-sliding>

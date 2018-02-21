@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Todo } from '../../models/todo';
 
 /**
  * Generated class for the TodosPage page.
@@ -16,14 +17,47 @@ import { TodoDataProvider } from '../../providers/todo-data/todo-data';
 })
 export class TodosPage {
   selectedItem: any;
-  todos: Array<{name: string, time: string}> = [];
+  todos: Array<Todo> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public todoDataProv: TodoDataProvider) {
-    this.todoDataProv.getData().then((todos) => {
-      if(todos){
-        this.todos = todos;
-      }
+    this.todoDataProv.getTodosNotDone().then((todos) => {
+      this.todos = todos;
     });
+  }
+
+  //Functions
+  saveTodo(todo) {
+    this.todoDataProv.saveTodo(todo).then(() => {
+      this.todoDataProv.getTodosNotDone().then((todos) => {
+        this.todos = todos;
+      });
+    });
+  }
+
+  removeTodo(todo) {
+    this.todoDataProv.deleteTodo(todo.id).then(() => {
+      this.todoDataProv.getTodosNotDone().then((todos) => {
+        this.todos = todos;
+      });
+    });
+  }
+
+  updateTodo(todo) {
+    todo.done = true;
+    this.todoDataProv.update(todo).then(() => {
+      this.todoDataProv.getTodosNotDone().then((todos) => {
+        this.todos = todos;
+      });
+    });
+  }
+
+
+  //Events
+  deleteEvent(event, todo) {
+    this.removeTodo(todo);
+  }
+  completeEvent(event, todo) {
+    this.updateTodo(todo);
   }
 
   todoTap(event, todo) {
@@ -32,38 +66,22 @@ export class TodosPage {
     });
   }
 
-  addTodoFloatingActionButtonPressed(event) {
+  addTodoFloatingActionButtonPressed(event)  {
     let todoCreateModal = this.modalCtrl.create('TodoCreatePage');
-    todoCreateModal.onDidDismiss(data => {
-      if(data){
-            this.saveTodo(data);
-          }
+    todoCreateModal.onDidDismiss(todo => {
+      if (todo) {
+        this.saveTodo(todo);
+      }
     });
     todoCreateModal.present();
-  }
-
-  saveTodo(todo) {
-    this.todos.push(todo);
-    this.todoDataProv.save(this.todos);
-  }
-
-  removeTodoEvent(event, todo) {
-    this.removeTodo(todo);
-  }
-
-  removeTodo(todo) {
-    this.todos.forEach( (item, index) => {
-     if(item === todo) this.todos.splice(index,1);
-   });
-   this.todoDataProv.save(this.todos);
   }
 
   listItemDrag(item, todo) {
     let percent = item.getSlidingPercent();
     // right side drag
-    if (percent > 2) {
+    if (percent > 2.25) {
       // positive
-      this.removeTodo(todo);
+      this.updateTodo(todo);
     }
   }
 

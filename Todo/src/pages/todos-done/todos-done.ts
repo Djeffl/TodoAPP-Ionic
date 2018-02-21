@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Todo } from '../../models/todo';
 /**
  * Generated class for the TodosDonePage page.
  *
@@ -14,12 +15,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'todos-done.html',
 })
 export class TodosDonePage {
+  todos: Array<Todo> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public todoDataProv: TodoDataProvider) {
+    this.todoDataProv.getTodosDone().then((todos) => {
+      this.todos = todos;
+    });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TodosDonePage');
-  }
 
 }

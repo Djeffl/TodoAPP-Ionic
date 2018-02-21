@@ -15,5 +15,25 @@
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
 
+        <button ion-item (tap)="todoTap($event, todo)">
+            {{todo.name}}
+            <div class="item-note" item-end>
+            {{todo.time}}
+            </div>
+          </button>
+      <ion-item-options side="right">
+        <button color="danger" (click)="deleteEvent($event, todo)" ion-button>
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button expandable ion-button (click)="completeEvent(item)">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Done
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
