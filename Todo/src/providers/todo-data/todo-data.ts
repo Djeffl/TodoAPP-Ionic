@@ -16,6 +16,9 @@ export class TodoDataProvider {
 
   saveTodo(todo: Todo) {
     return this.getAll().then((todos) => {
+      if(!todos) {
+        todos = [];
+      }
       todos.push(todo);
       this.save(todos);
     });
@@ -26,7 +29,6 @@ export class TodoDataProvider {
   }
 
   getAll() {
-    console.log("in getAll");
     return this.storage.get('todos');
   }
 
