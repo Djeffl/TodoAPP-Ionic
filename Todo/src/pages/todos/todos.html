@@ -4,15 +4,16 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Tasks</ion-title>
+    <ion-buttons end>
+      <button (tap)="addTodoFloatingActionButtonPressed($event)" id="addBtn" ion-button>
+        Add
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <!-- fab button -->
-  <ion-fab (tap)="addTodoFloatingActionButtonPressed($event)" top right edge>
-    <button ion-fab primary><ion-icon name="add-circle"></ion-icon></button>
-  </ion-fab>
-  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
+  <ion-list><!--reorder="true" (ionItemReorder)="reorderItems($event)"> -->
     <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
 
         <button ion-item (tap)="todoTap($event, todo)">
