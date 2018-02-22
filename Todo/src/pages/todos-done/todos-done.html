@@ -16,10 +16,21 @@
 
 <ion-content>
   <ion-list>
-    <ion-list-header>Date</ion-list-header>
-    <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
+    <ion-item-group *ngFor="let displayTodo of displayTodos">
+      <ion-item-divider color="light">{{ displayTodo.date }}</ion-item-divider>
+        <ion-list *ngFor="let todo of displayTodo.todos">
+          <ion-item>
+              Test
+              {{todo.name}}
+              <div class="item-note" item-end>
+              {{todo.time}}
+              </div>
+          </ion-item>
+        </ion-list>
+      </ion-item-group>
 
-        <button ion-item (tap)="todoTap($event, todo)">
+    <!-- <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
+          <button ion-item (tap)="todoTap($event, todo)">
             {{todo.name}}
             <div class="item-note" item-end>
             {{todo.time}} - {{ todo.completedAt }}
@@ -35,6 +46,6 @@
           Done
         </button>
       </ion-item-options>
-    </ion-item-sliding>
+    </ion-item-sliding> -->
   </ion-list>
 </ion-content>
