@@ -15,11 +15,11 @@ import { Todo } from '../../models/todo';
   templateUrl: 'todos-done.html',
 })
 export class TodosDonePage {
-  displayTodos: Array<{ date: string, todos: Array<Todo>}> = [];
+  groups: Array<{ date: string, todos: Array<Todo>}> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public todoDataProv: TodoDataProvider) {
     this.todoDataProv.getTodosDone().then((todos) => {
-      this.displayTodos = this.convertToDisplayTodos(todos);
+      this.groups = this.convertToDisplayTodos(todos);
     });
   }
 
@@ -114,7 +114,6 @@ export class TodosDonePage {
       }
       while(nextTodoHasSameDate);
     }
-    displayTodos.push({date: "26 December 2017", todos: [{name: "P", time: "20:00"}]})
     return displayTodos;
   }
 }
