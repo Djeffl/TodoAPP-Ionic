@@ -6,6 +6,10 @@ export class Todo {
   completedAt: Date;
   createdAt: Date;
   details: any;
+  //type: string; // Options: [none, subtasks, time] Note to self: visualize with icons & fancy shizzle
+  //startTime: string;
+  //subTasks: any;
+  //timeLeft: string;
 
   constructor(id: string, name:string, time: string, done: boolean, createdAt: Date) {
     this.id = id;
