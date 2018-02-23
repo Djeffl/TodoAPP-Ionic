@@ -1,0 +1,49 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "name": "Walk the dog",
+      "type": "basic",
+      "createdAt": "24/02/2017",
+      "done": "false"
+    },
+    {
+      "id": "2",
+      "name": "Study Math",
+      "type": "time",
+      "startTime": "06:00",
+      "timeLeft": "04:30",
+      "createdAt": "22/02/2017",
+      "done": "false"
+    },
+    {
+      "id": "3",
+      "name": "Grossery Shopping",
+      "type": "assignments",
+      "createdAt": "22/01/2017",
+      "done": "false",
+      "assignments": [
+        {
+          "name": "Salade",
+          "done": "false"
+        },
+        {
+          "name": "Milk",
+          "done": "false"
+        },
+        {
+          "name": "Tapanada",
+          "done": "false"
+        },
+        {
+          "name": "Salt",
+          "done": "false"
+        },
+        {
+          "name": "Salade",
+          "done": "false"
+        }
+      ]
+    }
+  ]
+}
