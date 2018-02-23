@@ -1,7 +1,7 @@
 export class Todo {
   id: string; //UUID
   name: string;
-  time: string; // Remove me soon please
+  time: string; // Remove me soon please -> Needs to become displayElement
   done: boolean;
   completedAt: Date;
   createdAt: Date;
