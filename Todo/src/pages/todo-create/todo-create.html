@@ -17,27 +17,53 @@
       </button>
     </ion-buttons>
 </ion-navbar>
+<ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="type">
+      <ion-segment-button value="basic">
+        Basic
+      </ion-segment-button>
+      <ion-segment-button value="time">
+        Time
+      </ion-segment-button>
+      <ion-segment-button value="assignments">
+        Assignments
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-  <!-- <ion-fab (tap)="createTodoFloatingActionButtonPressed($event)" top right edge>
-    <button ion-fab primary><ion-icon name="checkmark-circle-outline"></ion-icon></button>
-  </ion-fab> -->
   <ion-list>
     <ion-item>
       <ion-label fixed>Name</ion-label>
       <ion-input [(ngModel)]="name" type="text" value=""></ion-input>
     </ion-item>
+    <div [ngSwitch]="type">
+      <!-- <ion-item *ngSwitchCase="'basic'">
+      </ion-item> -->
+      <ion-item *ngSwitchCase="'time'">
+        <ion-label fixed>Time</ion-label>
+        <ion-datetime
+          placeholder="-"
+          displayFormat="HH:mm"
+          [(ngModel)]="time"
+          minuteValues="0,15,30,45"
+        ></ion-datetime>
+      </ion-item>
+      <div *ngSwitchCase="'assignments'">
+      <ion-label fixed>Assignments</ion-label>
+      <ion-list *ngFor="let assignment of assignments; let i = index">
+        <ion-item>
+          <ion-label stacked>{{ i + 1 }}</ion-label>
+          <ion-input [(ngModel)]="assignments[i].name" (ngModelChange)="inputChanged(i)" type="text"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div><!-- end ngSwitchCase="'assignments'" -->
+  </div><!-- end ngSwitch -->
+    <!-- <button (tap)="logData()" ion-button icon-only>
+      CLICK ME
+    </button> -->
 
-    <ion-item>
-      <ion-label fixed>Time</ion-label>
-      <ion-datetime
-        placeholder="-"
-        displayFormat="HH:mm"
-        [(ngModel)]="time"
-        minuteValues="0,15,30,45"
-      ></ion-datetime>
-    </ion-item>
   </ion-list>
 </ion-content>

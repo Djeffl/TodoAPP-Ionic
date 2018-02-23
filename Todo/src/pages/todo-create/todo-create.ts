@@ -11,6 +11,8 @@ import { UUID } from 'angular2-uuid';
 export class TodoCreatePage {
   time: string;
   name: string;
+  type: string = "basic";
+  assignments: [{name: string}] = [{name: ""}];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl :ViewController, public toastCtrl: ToastController) {
 
@@ -44,4 +46,20 @@ export class TodoCreatePage {
 
     toast.present();
   }
+
+  inputChanged(id) {
+    // Add new field if all fields are filled in
+    if(this.assignments[id].name != "" && id == this.assignments.length-1 ) {
+      this.assignments.push({name: ""});
+    }
+    // Remove field if it's empty
+    else if(this.assignments[id].name == "" && id < this.assignments.length-1) {
+      this.assignments.splice(id, 1);
+    }
+  }
+
+  // Test
+  // logData() {
+  //   console.log(JSON.stringify(this.assignments));
+  // }
 }
