@@ -1,7 +1,7 @@
 export class Todo {
   id: string; //UUID
   name: string;
-  //time: string; // Remove me soon please -> Needs to become displayElement
+  displayElement: string;
   done: boolean;
   completedAt: Date;
   createdAt: Date;
@@ -15,12 +15,17 @@ export class Todo {
     this.name = name;
     this.done = done;
     this.createdAt = createdAt;
-    if(type == "Time") {
+    if(type == "Basic") {
+      this.displayElement = "-";
+    }
+    else if(type == "Time") {
       this.startTime = typeParameter;
       this.timeLeft = typeParameter;
+      this.displayElement = typeParameter;
     }
     else if (type == "Assignments") {
       this.subTasks = typeParameter;
+      this.displayElement = typeParameter.length;
     }
   }
 }
