@@ -12,6 +12,7 @@ export class Todo {
 
   constructor(id: string, type: string, name:string, done: boolean, createdAt: Date, typeParameter: any) {
     this.id = id;
+    this.type = type;
     this.name = name;
     this.done = done;
     this.createdAt = createdAt;
