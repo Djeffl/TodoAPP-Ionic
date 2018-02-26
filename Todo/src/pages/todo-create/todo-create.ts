@@ -11,7 +11,7 @@ import { UUID } from 'angular2-uuid';
 export class TodoCreatePage {
   time: string;
   name: string;
-  type: string = "basic";
+  type: string = "Basic";
   assignments: [{name: string, done: boolean}] = [{ name: "", done: false }];
   startTime: string;
 
