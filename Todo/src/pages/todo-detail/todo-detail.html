@@ -8,7 +8,19 @@
 
 <ion-content>
   <div class="item-detail" padding>
-    <h2>item: {{todo.name}}</h2>
-    <p>Time: {{todo.time}}</p>
+    type: {{todo.type}}
+    <div [ngSwitch]="type">
+      <ion-item *ngSwitchCase="'basic'">
+        Basic
+      </ion-item>
+      <ion-item *ngSwitchCase="'Time'">
+        Time
+      </ion-item>
+      <ion-item *ngSwitchCase="'Assignments'">
+        Assignments
+      </ion-item>
+    </div>
+    <!-- <h2>item: {{todo.name}}</h2>
+    <p>Time: {{todo.startTime}}</p> -->
   </div>
 </ion-content>
