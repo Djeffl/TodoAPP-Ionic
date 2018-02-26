@@ -25,22 +25,22 @@ export class TodoCreatePage {
       this.showErrorToast('Please provide a name');
       return;
     }
-    if(type == "basic") {
+    if(this.type == "Basic") {
       // constructor(id: string, type: string, name:string, done: boolean, createdAt: Date)
       this.viewCtrl.dismiss(
         new Todo(
           UUID.UUID(),
-          "basic",
+          this.type,
           this.name,
           false,
           new Date()
         )
       );
     }
-    else if(type == "time") {
+    else if(this.type == "Time") {
       // constructor(id: string, type: string, name: string, done: boolean, createdAt: Date, startTime: string)
 
-      if(startTime == "00:00") {
+      if(this.startTime == "00:00" || this.startTime == "" || this.startTime == undefined) {
         this.showErrorToast("The minimum time is atleast 15 minutes");
         return;
       }
@@ -48,7 +48,7 @@ export class TodoCreatePage {
       this.viewCtrl.dismiss(
         new Todo(
           UUID.UUID(),
-          "time",
+          this.type,
           this.name,
           false,
           new Date(),
@@ -56,17 +56,19 @@ export class TodoCreatePage {
         )
       );
     }
-    else if(type == "assignments") {
+    else if(this.type == "Assignments") {
       // constructor(id: string, type: string, name: string, done: boolean, createdAt: Date, subTasks: Array<string>)
-      this.assignments.splice(-1,1);
-      if(assignments.length = 0) {
+      if(this.assignments.length == 1) {
         this.showErrorToast("Fill in atleast 1 task");
         return;
       }
+      // Remove empty data row
+      this.assignments.splice(-1,1);
+
       this.viewCtrl.dismiss(
         new Todo(
           UUID.UUID(),
-          "time",
+          this.type,
           this.name,
           false,
           new Date(),

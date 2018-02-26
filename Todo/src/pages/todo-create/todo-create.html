@@ -19,13 +19,13 @@
 </ion-navbar>
 <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="type">
-      <ion-segment-button value="basic">
+      <ion-segment-button value="Basic">
         Basic
       </ion-segment-button>
-      <ion-segment-button value="time">
+      <ion-segment-button value="Time">
         Time
       </ion-segment-button>
-      <ion-segment-button value="assignments">
+      <ion-segment-button value="Assignments">
         Assignments
       </ion-segment-button>
     </ion-segment>
@@ -42,16 +42,16 @@
     <div [ngSwitch]="type">
       <!-- <ion-item *ngSwitchCase="'basic'">
       </ion-item> -->
-      <ion-item *ngSwitchCase="'time'">
+      <ion-item *ngSwitchCase="'Time'">
         <ion-label fixed>Time</ion-label>
         <ion-datetime
-          placeholder="-"
           displayFormat="HH:mm"
           [(ngModel)]="startTime"
           minuteValues="0,15,30,45"
-        ></ion-datetime>
+          initialValue="00:00"
+        >00:00</ion-datetime>
       </ion-item>
-      <div *ngSwitchCase="'assignments'">
+      <div *ngSwitchCase="'Assignments'">
       <ion-label fixed>Assignments</ion-label>
       <ion-list *ngFor="let assignment of assignments; let i = index">
         <ion-item>
