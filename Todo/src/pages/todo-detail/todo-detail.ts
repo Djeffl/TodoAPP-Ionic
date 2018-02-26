@@ -15,6 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TodoDetailPage {
   todo: any;
+  type: string;
   defaultTodo: any = {
     name: "todoName",
     time: "24:00"
@@ -22,6 +23,7 @@ export class TodoDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.todo = navParams.get("todo") || this.defaultTodo;
+    this.type = this.todo.type;
   }
 
 
