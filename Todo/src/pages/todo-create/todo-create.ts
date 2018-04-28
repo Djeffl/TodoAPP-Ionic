@@ -25,6 +25,10 @@ export class TodoCreatePage {
       this.showErrorToast('Please provide a name');
       return;
     }
+
+    //Capitilize first char
+    this.name = this.name.charAt(0).toUpperCase() + this.name.substr(1);
+
     if(this.type == "Basic") {
       // constructor(id: string, type: string, name:string, done: boolean, createdAt: Date)
       this.viewCtrl.dismiss(

@@ -1,5 +1,10 @@
 page-todo-create {
-
+  #assignmentsLabel {
+    font-size: 16px;
+    padding-left: 16px;
+    text-decoration: underline;
+    font-weight: bold;
+  }
 }
 
 ion-buttons button[icon-only].my-style-for-modal {

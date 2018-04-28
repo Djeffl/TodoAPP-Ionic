@@ -1,6 +1,14 @@
 page-todos {
+  * {
+    font-size: 20px;
+  }
   #addBtn {
     color:#4c8dfc;
     text-transform: none;
+  }
+  .list-icon {
+    font-size: 32px;
+    color:#4c8dfc;
+    margin-right: 10px;
   }
 }

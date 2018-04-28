@@ -7,10 +7,10 @@ export class Todo {
   createdAt: Date;
   type: string; // Options: [none, subtasks, time] Note to self: visualize with icons & fancy shizzle
   startTime: string;
-  subTasks: Array<string>;
+  subTasks: Array<{name:string, done: boolean}>;
   timeLeft: string;
 
-  constructor(id: string, type: string, name:string, done: boolean, createdAt: Date, typeParameter: any) {
+  constructor(id: string, type: string, name:string, done: boolean, createdAt: Date, typeParameter?: any) {
     this.id = id;
     this.type = type;
     this.name = name;

@@ -36,14 +36,14 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label fixed>Name</ion-label>
+      <ion-label fixed>Name:</ion-label>
       <ion-input [(ngModel)]="name" type="text" value=""></ion-input>
     </ion-item>
     <div [ngSwitch]="type">
       <!-- <ion-item *ngSwitchCase="'basic'">
       </ion-item> -->
       <ion-item *ngSwitchCase="'Time'">
-        <ion-label fixed>Time</ion-label>
+        <ion-label fixed>Time:</ion-label>
         <ion-datetime
           displayFormat="HH:mm"
           [(ngModel)]="startTime"
@@ -52,18 +52,15 @@
         >00:00</ion-datetime>
       </ion-item>
       <div *ngSwitchCase="'Assignments'">
-      <ion-label fixed>Assignments</ion-label>
+      <ion-label id="assignmentsLabel">Assignments</ion-label>
       <ion-list *ngFor="let assignment of assignments; let i = index">
         <ion-item>
-          <ion-label stacked>{{ i + 1 }}</ion-label>
+          <ion-label fixed>{{ i + 1 }}</ion-label>
           <ion-input [(ngModel)]="assignments[i].name" (ngModelChange)="inputChanged(i)" type="text"></ion-input>
         </ion-item>
       </ion-list>
     </div><!-- end ngSwitchCase="'assignments'" -->
   </div><!-- end ngSwitch -->
-    <!-- <button (tap)="logData()" ion-button icon-only>
-      CLICK ME
-    </button> -->
 
   </ion-list>
 </ion-content>

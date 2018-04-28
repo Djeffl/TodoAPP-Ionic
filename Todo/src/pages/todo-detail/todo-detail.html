@@ -1,6 +1,11 @@
 <ion-header>
 <ion-navbar>
-    <ion-title>{{ todo.name }}</ion-title>
+  <ion-title>Todos>Detail</ion-title>
+  <ion-buttons end>
+    <button (tap)="editTodo($event, todo)" color="primary" ion-button icon-only>
+      <ion-icon name="brush"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-navbar>
 
 </ion-header>
@@ -8,19 +13,29 @@
 
 <ion-content>
   <div class="item-detail" padding>
-    type: {{todo.type}}
+    <h1 class="todoName">{{ todo.name }}</h1>
     <div [ngSwitch]="type">
-      <ion-item *ngSwitchCase="'basic'">
-        Basic
+      <ion-item *ngSwitchCase="'Basic'">
       </ion-item>
-      <ion-item *ngSwitchCase="'Time'">
-        Time
-      </ion-item>
-      <ion-item *ngSwitchCase="'Assignments'">
-        Assignments
-      </ion-item>
+      <div *ngSwitchCase="'Time'" text-center>
+        <p id="countDownTimer"> {{ todo.timeLeft }} </p>
+      </div>
+      <div id="assignments" *ngSwitchCase="'Assignments'">
+        <ion-label id="assignmentsLabel">Assignments</ion-label>
+        <ion-list>
+            <button ion-item *ngFor="let subTask of todo.subTasks; let i = index">
+              <p item-start>
+              {{ i + 1 }}. {{ subTask.name }}
+              </p>
+              <ion-checkbox (click)="completeSubTask($event, i)" checked="{{subTask.done}}" item-end color="dark"></ion-checkbox>
+            </button>
+        </ion-list>
+      </div><!-- end ngSwitchCase="'assignments'" -->
     </div>
-    <!-- <h2>item: {{todo.name}}</h2>
-    <p>Time: {{todo.startTime}}</p> -->
   </div>
 </ion-content>
+<ion-footer *ngIf="type == 'Time'" no-shadow>
+	<ion-toolbar position="bottom">
+		<button text-center ion-item full (click)="startCountDownTime()">Start</button>
+	</ion-toolbar>
+</ion-footer>

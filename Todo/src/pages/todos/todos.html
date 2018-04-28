@@ -17,6 +17,11 @@
     <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
 
         <button ion-item (tap)="todoTap($event, todo)">
+          <span [ngSwitch]="todo.type">
+            <ion-icon *ngSwitchCase="'Time'" name="timer" class="icon list-icon"></ion-icon>
+            <ion-icon *ngSwitchCase="'Assignments'" name="list" class="icon list-icon"></ion-icon>
+            <ion-icon *ngSwitchCase="'Basic'" name="clipboard" class="icon list-icon"></ion-icon>
+          </span>
             {{todo.name}}
             <div class="item-note" item-end>
             {{todo.displayElement}}
