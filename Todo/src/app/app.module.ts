@@ -7,7 +7,7 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { TodoDataProvider } from '../providers/todo-data/todo-data';
+import { Database } from '../providers/database';
 import { IonicStorageModule } from '@ionic/storage';
 
 
@@ -25,9 +25,10 @@ import { IonicStorageModule } from '@ionic/storage';
     MyApp
   ],
   providers: [
-    TodoDataProvider,
+    Database,
     StatusBar,
     SplashScreen,
+    IonicStorageModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })

@@ -106,9 +106,4 @@ export class TodoCreatePage {
       this.assignments.splice(id, 1);
     }
   }
-
-  // Test
-  // logData() {
-  //   console.log(JSON.stringify(this.assignments));
-  // }
 }

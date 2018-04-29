@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Database } from '../../providers/database';
 import { Todo } from '../../models/todo';
 import { reorderArray } from 'ionic-angular';
 
@@ -20,36 +20,36 @@ export class TodosPage {
   selectedItem: any;
   todos: Array<Todo> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public todoDataProv: TodoDataProvider) {
-    this.todoDataProv.getTodosNotDone().then((todos) => {
-      this.todos = todos;
-    });
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private database: Database) {
+    
   }
 
   //Functions
-  saveTodo(todo) {
-    this.todoDataProv.saveTodo(todo).then(() => {
-      this.todoDataProv.getTodosNotDone().then((todos) => {
-        this.todos = todos;
-      });
+  saveTodo(todo: Todo) {
+    this.database.create("INSERT INTO todo (id, type, name, done, createdAt) VALUES(?,?,?,?,?) ", (todo.id, todo.type, todo.name, todo.done, todo.createdAt))
+    .then(() => {
+    })
+    .catch(err => {
     });
   }
 
-  removeTodo(todo) {
-    this.todoDataProv.deleteTodo(todo.id).then(() => {
-      this.todoDataProv.getTodosNotDone().then((todos) => {
-        this.todos = todos;
-      });
-    });
+  removeTodo(todo: Todo) {
+    this.database.delete("DELETE FROM todo WHERE id = ?", (todo.id));
   }
 
-  updateTodo(todo) {
+  updateTodo(todo: Todo) {
     todo.done = true;
     todo.completedAt = new Date();
-    this.todoDataProv.update(todo).then(() => {
-      this.todoDataProv.getTodosNotDone().then((todos) => {
-        this.todos = todos;
-      });
+    this.database.update("UPDATE todo SET done = ?, completedAt = ? where id = ?", (todo.done, todo.completedAt, todo.id));
+  }
+
+  refreshData() {
+    this.database.read("SELECT * FROM todo", {})
+    .then((todos) => {
+      this.todos = todos;
+    })
+    .catch(err => {
+      
     });
   }
 
