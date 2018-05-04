@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Todo } from '../../models/todo';
-import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Database } from '../../providers/database';
+//import { TodoDataProvider } from '../../providers/todo-data/todo-data';
 
 @IonicPage()
 @Component({
@@ -16,9 +17,15 @@ export class TodoDetailPage {
     time: "24:00"
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public todoDataProv: TodoDataProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private database: Database) {
     this.todo = navParams.get("todo") || this.defaultTodo;
     this.type = this.todo.type;
+    this.database.readSubtasks(this.todo).then((subtasks) => {
+      this.todo.subtasks = subtasks;
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   editTodo(event, todo) {
@@ -28,16 +35,13 @@ export class TodoDetailPage {
   }
 
   completeSubTask(event, subTaskId) {
-    if(this.todo.subTasks[subTaskId].done) {
-      this.todo.subTasks[subTaskId].done = false;
-      this.todo.displayElement =  String(Number(this.todo.displayElement)+1);
-    } else {
-      this.todo.subTasks[subTaskId].done = true;
-      this.todo.displayElement =  String(Number(this.todo.displayElement)-1);
-    }
-      this.todoDataProv.update(this.todo).then(() => {
-        // console.log("updated");
-      });
+    // if(this.todo.subTasks[subTaskId].done) {
+    //   this.todo.subTasks[subTaskId].done = false;
+    //   this.todo.displayElement =  String(Number(this.todo.displayElement)+1);
+    // } else {
+    //   this.todo.subTasks[subTaskId].done = true;
+    //   this.todo.displayElement =  String(Number(this.todo.displayElement)-1);
+    // }
   }
 
   timer(todo) {

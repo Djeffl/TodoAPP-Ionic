@@ -23,11 +23,11 @@
       <div id="assignments" *ngSwitchCase="'Assignments'">
         <ion-label id="assignmentsLabel">Assignments</ion-label>
         <ion-list>
-            <button ion-item *ngFor="let subTask of todo.subTasks; let i = index">
+            <button ion-item *ngFor="let subtask of todo.subtasks; let i = index">
               <p item-start>
-              {{ i + 1 }}. {{ subTask.name }}
+              {{ i + 1 }}. {{ subtask.name }}
               </p>
-              <ion-checkbox (click)="completeSubTask($event, i)" checked="{{subTask.done}}" item-end color="dark"></ion-checkbox>
+              <ion-checkbox (click)="completeSubTask($event, i)" checked="{{subtask.done}}" item-end color="dark"></ion-checkbox>
             </button>
         </ion-list>
       </div><!-- end ngSwitchCase="'assignments'" -->

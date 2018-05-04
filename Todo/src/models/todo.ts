@@ -1,5 +1,8 @@
+import { Subtask } from './subtask';
+
+
 export class Todo {
-  id: string; //UUID
+  id: number;
   name: string;
   displayElement: string;
   done: boolean;
@@ -7,10 +10,10 @@ export class Todo {
   createdAt: Date;
   type: string; // Options: [none, subtasks, time] Note to self: visualize with icons & fancy shizzle
   startTime: string;
-  subTasks: Array<{name:string, done: boolean}>;
+  subtasks: Array<Subtask>;
   timeLeft: string;
 
-  constructor(id: string, type: string, name:string, done: boolean, createdAt: Date, typeParameter?: any) {
+  constructor(id: number, type: string, name:string, done: boolean, createdAt: Date, typeParameter?: any) {
     this.id = id;
     this.type = type;
     this.name = name;
@@ -25,7 +28,7 @@ export class Todo {
       this.displayElement = typeParameter;
     }
     else if (type == "Assignments") {
-      this.subTasks = typeParameter;
+      this.subtasks = typeParameter;
       this.displayElement = typeParameter.length;
     }
   }

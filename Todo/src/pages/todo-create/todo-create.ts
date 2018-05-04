@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { Todo } from '../../models/todo';
-import { UUID } from 'angular2-uuid';
 
 @IonicPage()
 @Component({
@@ -33,7 +32,7 @@ export class TodoCreatePage {
       // constructor(id: string, type: string, name:string, done: boolean, createdAt: Date)
       this.viewCtrl.dismiss(
         new Todo(
-          UUID.UUID(),
+          null,
           this.type,
           this.name,
           false,
@@ -51,7 +50,7 @@ export class TodoCreatePage {
 
       this.viewCtrl.dismiss(
         new Todo(
-          UUID.UUID(),
+          null,
           this.type,
           this.name,
           false,
@@ -71,7 +70,7 @@ export class TodoCreatePage {
 
       this.viewCtrl.dismiss(
         new Todo(
-          UUID.UUID(),
+          null,
           this.type,
           this.name,
           false,

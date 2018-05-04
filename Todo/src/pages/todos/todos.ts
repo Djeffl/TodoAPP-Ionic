@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Database } from '../../providers/database';
 import { Todo } from '../../models/todo';
+import { Subtask } from '../../models/subtask';
 import { reorderArray } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
+
 
 /**
  * Generated class for the TodosPage page.
@@ -20,39 +23,67 @@ export class TodosPage {
   selectedItem: any;
   todos: Array<Todo> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private database: Database) {
-    
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private platform: Platform, private database: Database) {
+    this.platform.ready().then(() => {
+      this.database.connectDb().then(() => {
+        this.refreshData();
+      });
+    });
   }
 
   //Functions
   saveTodo(todo: Todo) {
-    this.database.create("INSERT INTO todo (id, type, name, done, createdAt) VALUES(?,?,?,?,?) ", (todo.id, todo.type, todo.name, todo.done, todo.createdAt))
-    .then(() => {
+    if(todo.type == "Assignments") {
+      console.log(JSON.stringify(todo.subtasks));
+      for(let i = 0; i < todo.subtasks.length; i++){
+        let subtask: Subtask = todo.subtasks[i];
+        this.database.createSubTask(subtask).then(() => {
+          console.log(JSON.stringify(subtask) + " saved.");
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+    }
+    this.database.createTodo(todo).then(() => {
+      this.refreshData();
     })
     .catch(err => {
+      console.log(err);
     });
   }
 
   removeTodo(todo: Todo) {
-    this.database.delete("DELETE FROM todo WHERE id = ?", (todo.id));
+    this.database.removeTodo(todo)
+    .then(() => {
+      this.refreshData();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   updateTodo(todo: Todo) {
     todo.done = true;
     todo.completedAt = new Date();
-    this.database.update("UPDATE todo SET done = ?, completedAt = ? where id = ?", (todo.done, todo.completedAt, todo.id));
-  }
-
-  refreshData() {
-    this.database.read("SELECT * FROM todo", {})
-    .then((todos) => {
-      this.todos = todos;
+    this.database.updateTodo(todo)
+    .then(() => {
+      this.refreshData();
     })
     .catch(err => {
-      
+      console.log(err);
     });
   }
 
+  refreshData() {
+    this.database.readTodos("WHERE done = 'false'")
+    .then(todos => {
+      console.log(JSON.stringify(todos));
+      this.todos = todos;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 
   //Events
   deleteEvent(event, todo) {
@@ -87,12 +118,12 @@ export class TodosPage {
     }
   }
 
-  reorderItems(indexes) {
-    this.todos = reorderArray(this.todos, indexes);
+  //reorderItems(indexes) {
+    //this.todos = reorderArray(this.todos, indexes);
 
     // TODO: Save new ordered list
     //this.save
 
-  }
+  //}
 
 }

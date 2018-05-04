@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Database } from '../providers/database';
 import { IonicStorageModule } from '@ionic/storage';
+import { SQLite } from '@ionic-native/sqlite';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { IonicStorageModule } from '@ionic/storage';
   providers: [
     Database,
     StatusBar,
+    SQLite,
     SplashScreen,
     IonicStorageModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

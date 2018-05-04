@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Database } from '../../providers/database';
+import { Platform } from 'ionic-angular';
 import { Todo } from '../../models/todo';
 /**
  * Generated class for the TodosDonePage page.
@@ -17,14 +18,28 @@ import { Todo } from '../../models/todo';
 export class TodosDonePage {
   groups: Array<{ date: string, todos: Array<Todo>}> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public todoDataProv: TodoDataProvider) {
-    this.todoDataProv.getTodosDone().then((todos) => {
-      this.groups = this.convertToDisplayTodos(todos);
+  constructor(public navCtrl: NavController, public navParams: NavParams, private platform: Platform, private database :Database) {
+    this.platform.ready().then(() => {
+      this.database.connectDb().then(() => {
+        this.refreshData();
+      });
     });
   }
 
+  refreshData() {
+    this.database.readTodos("WHERE done = 'true'")
+    .then(todos => {
+      console.log(JSON.stringify(todos));
 
-  sortArrayByDate(todos: Array<Todo>) {
+      this.groups = this.convertToDisplayTodos(this.sortArrayByDate(todos));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+
+  sortArrayByDate(todos: Array<Todo>): Array<Todo> {
     var length = todos.length;
     //Bubble sort
     for(let i = 1; i < length;i++) {
