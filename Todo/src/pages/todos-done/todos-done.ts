@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Database } from '../../providers/database';
+import { Database } from '../../providers/database/database';
 import { Platform } from 'ionic-angular';
 import { Todo } from '../../models/todo';
 /**
@@ -130,5 +130,16 @@ export class TodosDonePage {
       while(nextTodoHasSameDate);
     }
     return displayTodos;
+  }
+
+  undoClick(event, todo) {
+    todo.done = false;
+    this.database.updateTodo(todo)
+    .then(() => {
+      this.refreshData();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 }

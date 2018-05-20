@@ -1,19 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { Database } from '../../providers/database';
+import { IonicPage, NavController, NavParams, ModalController, Events, PopoverController } from 'ionic-angular';
+import { Database } from '../../providers/database/database';
 import { Todo } from '../../models/todo';
-import { Subtask } from '../../models/subtask';
-import { reorderArray } from 'ionic-angular';
 import { Platform } from 'ionic-angular';
-
-
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the TodosPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   selector: 'page-todos',
@@ -23,27 +19,20 @@ export class TodosPage {
   selectedItem: any;
   todos: Array<Todo> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private platform: Platform, private database: Database) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private platform: Platform, private database: Database, private events: Events, private popoverCtrl: PopoverController, private storage: Storage) {
     this.platform.ready().then(() => {
       this.database.connectDb().then(() => {
         this.refreshData();
       });
     });
+
+    this.events.subscribe('todo:isDirty', () => {
+      this.refreshData();
+    });
   }
 
   //Functions
   saveTodo(todo: Todo) {
-    if(todo.type == "Assignments") {
-      console.log(JSON.stringify(todo.subtasks));
-      for(let i = 0; i < todo.subtasks.length; i++){
-        let subtask: Subtask = todo.subtasks[i];
-        this.database.createSubTask(subtask).then(() => {
-          console.log(JSON.stringify(subtask) + " saved.");
-        }).catch(err => {
-          console.log(err);
-        });
-      }
-    }
     this.database.createTodo(todo).then(() => {
       this.refreshData();
     })
@@ -75,20 +64,27 @@ export class TodosPage {
   }
 
   refreshData() {
-    this.database.readTodos("WHERE done = 'false'")
-    .then(todos => {
-      console.log(JSON.stringify(todos));
-      this.todos = todos;
+    this.storage.get("TodosFilter")
+    .then(filter => {
+      if(!filter) {
+        filter = "WHERE done = 'false'";
+      }
+      console.log(filter);
+      this.database.readTodos(filter)
+      .then(todos => {
+        this.todos = todos;
+      });
     })
     .catch(err => {
       console.log(err);
-    })
+    });
   }
 
   //Events
   deleteEvent(event, todo) {
     this.removeTodo(todo);
   }
+
   completeEvent(event, todo) {
     this.updateTodo(todo);
   }
@@ -109,14 +105,22 @@ export class TodosPage {
     todoCreateModal.present();
   }
 
-  listItemDrag(item, todo) {
-    let percent = item.getSlidingPercent();
-    // right side drag
-    if (percent > 2.25) {
-      // positive
-      this.updateTodo(todo);
-    }
+  menuOptionClick(event) {
+    let popover = this.popoverCtrl.create('TodosPopOverPage');
+    //popover.present();
+    popover.present({
+      ev: event
+    });
   }
+
+  // listItemDrag(item, todo) {
+  //   let percent = item.getSlidingPercent();
+  //   // right side drag
+  //   if (percent > 2.25) {
+  //     // positive
+  //     this.updateTodo(todo);
+  //   }
+  // }
 
   //reorderItems(indexes) {
     //this.todos = reorderArray(this.todos, indexes);

@@ -1,11 +1,30 @@
+$categories: (
+ ionic: color($colors, primary),
+ //: #AC282B,
+ communication: #8E8D93,
+ Assignments: #FE4C52,
+ services: #FD8B2D,
+ Time: #FED035,
+ workshop: #69BB7B,
+ Basic: #3BC7C4,
+ documentation: #B16BE3,
+ navigation: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
 page-todos {
   * {
     font-size: 20px;
   }
-  #addBtn {
-    color:#4c8dfc;
-    text-transform: none;
-  }
+  @each $type, $value in auxiliary-categories() {
+    ion-item-sliding[type=#{$type}] ion-label {
+      border-left: 2px solid $value;
+      padding-left: 10px;
+    }
+   }
+
   .list-icon {
     font-size: 32px;
     color:#4c8dfc;

@@ -36,7 +36,7 @@ export class TodoCreatePage {
           this.type,
           this.name,
           false,
-          new Date()
+          new Date(),
         )
       );
     }
@@ -55,6 +55,7 @@ export class TodoCreatePage {
           this.name,
           false,
           new Date(),
+          null,
           this.startTime
         )
       );
@@ -75,6 +76,7 @@ export class TodoCreatePage {
           this.name,
           false,
           new Date(),
+          null,
           this.assignments
         )
       );

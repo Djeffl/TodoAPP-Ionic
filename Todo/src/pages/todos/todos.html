@@ -1,27 +1,32 @@
 <ion-header>
-  <ion-navbar>
+  <!-- <ion-toolbar color="primary"> -->
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Tasks</ion-title>
     <ion-buttons end>
-      <button (tap)="addTodoFloatingActionButtonPressed($event)" id="addBtn" ion-button>
-        Add
+      <button (tap)="addTodoFloatingActionButtonPressed($event)" id="addBtn" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button (tap)="menuOptionClick($event)" ion-button icon-only>
+        <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <!-- </ion-toolbar> -->
 </ion-header>
 
 <ion-content>
-  <ion-list><!--reorder="true" (ionItemReorder)="reorderItems($event)"> -->
-    <ion-item-sliding  *ngFor="let todo of todos" (ionDrag)="listItemDrag($event, todo)">
+  <ion-list #scheduleList><!--reorder="true" (ionItemReorder)="reorderItems($event)"> -->
+    <ion-item-sliding  *ngFor="let todo of todos" [attr.type]="todo.type">
 
         <button ion-item (tap)="todoTap($event, todo)">
-          <span [ngSwitch]="todo.type">
+          <!-- <span [ngSwitch]="todo.type">
             <ion-icon *ngSwitchCase="'Time'" name="timer" class="icon list-icon"></ion-icon>
             <ion-icon *ngSwitchCase="'Assignments'" name="list" class="icon list-icon"></ion-icon>
             <ion-icon *ngSwitchCase="'Basic'" name="clipboard" class="icon list-icon"></ion-icon>
-          </span>
+          </span> -->
             {{todo.name}}
             <div class="item-note" item-end>
             {{todo.displayElement}}

@@ -6,19 +6,20 @@ export class Todo {
   name: string;
   displayElement: string;
   done: boolean;
-  completedAt: Date;
+  completedAt?: Date;
   createdAt: Date;
   type: string; // Options: [none, subtasks, time] Note to self: visualize with icons & fancy shizzle
   startTime: string;
-  subtasks: Array<Subtask>;
+  subtasks?: Array<Subtask>;
   timeLeft: string;
 
-  constructor(id: number, type: string, name:string, done: boolean, createdAt: Date, typeParameter?: any) {
+  constructor(id: number, type: string, name:string, done: boolean, createdAt: Date, completedAt? : Date, typeParameter?: any) {
     this.id = id;
     this.type = type;
     this.name = name;
     this.done = done;
     this.createdAt = createdAt;
+    this.completedAt = completedAt;
     if(type == "Basic") {
       this.displayElement = "-";
     }
@@ -29,7 +30,7 @@ export class Todo {
     }
     else if (type == "Assignments") {
       this.subtasks = typeParameter;
-      this.displayElement = typeParameter.length;
+      this.displayElement = typeParameter == null ? 0: typeParameter.length;
     }
   }
 }

@@ -2,8 +2,11 @@
 <ion-navbar>
   <ion-title>Todos>Detail</ion-title>
   <ion-buttons end>
-    <button (tap)="editTodo($event, todo)" color="primary" ion-button icon-only>
-      <ion-icon name="brush"></ion-icon>
+    <button (tap)="completeTodo($event)" color="primary" ion-button icon-only>
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+    </button>
+    <button (tap)="menuOptionClick($event)" ion-button icon-only>
+      <ion-icon name="more"></ion-icon>
     </button>
   </ion-buttons>
 </ion-navbar>
@@ -15,8 +18,8 @@
   <div class="item-detail" padding>
     <h1 class="todoName">{{ todo.name }}</h1>
     <div [ngSwitch]="type">
-      <ion-item *ngSwitchCase="'Basic'">
-      </ion-item>
+      <!-- <ion-item *ngSwitchCase="'Basic'">
+      </ion-item> -->
       <div *ngSwitchCase="'Time'" text-center>
         <p id="countDownTimer"> {{ todo.timeLeft }} </p>
       </div>
@@ -27,7 +30,7 @@
               <p item-start>
               {{ i + 1 }}. {{ subtask.name }}
               </p>
-              <ion-checkbox (click)="completeSubTask($event, i)" checked="{{subtask.done}}" item-end color="dark"></ion-checkbox>
+              <ion-checkbox (click)="completeSubtask($event, i)" checked="{{subtask.done}}" item-end color="dark"></ion-checkbox>
             </button>
         </ion-list>
       </div><!-- end ngSwitchCase="'assignments'" -->
@@ -36,6 +39,6 @@
 </ion-content>
 <ion-footer *ngIf="type == 'Time'" no-shadow>
 	<ion-toolbar position="bottom">
-		<button text-center ion-item full (click)="startCountDownTime()">Start</button>
+		<button text-center ion-item full (click)="startCountDownTime()">{{countDownText}}</button>
 	</ion-toolbar>
 </ion-footer>

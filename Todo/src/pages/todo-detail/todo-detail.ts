@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Events, PopoverController } from 'ionic-angular';
 import { Todo } from '../../models/todo';
-import { Database } from '../../providers/database';
-//import { TodoDataProvider } from '../../providers/todo-data/todo-data';
+import { Database } from '../../providers/database/database';
+import { Subtask } from '../../models/subtask';
+import { Dialogs } from '@ionic-native/dialogs';
+
 
 @IonicPage()
 @Component({
@@ -16,64 +18,179 @@ export class TodoDetailPage {
     name: "todoName",
     time: "24:00"
   };
+  isDirty: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private database: Database) {
+  refreshIntervalId: any;
+  countDownText: string = "Start!";
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private database: Database, private toastCtrl: ToastController, private events: Events, private popoverCtrl: PopoverController, private dialogs: Dialogs) {
     this.todo = navParams.get("todo") || this.defaultTodo;
     this.type = this.todo.type;
-    this.database.readSubtasks(this.todo).then((subtasks) => {
-      this.todo.subtasks = subtasks;
+  }
+
+  ionViewCanLeave(): boolean{
+    // here we can either return true or false
+    // depending on if we want to leave this view
+    if(this.refreshIntervalId){
+      this.showErrorToast("Timer still running.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  ionViewWillLeave() {
+    if(this.isDirty) {
+      this.events.publish('todo:isDirty', null);
+    }
+  }
+
+  completeTodo(event) {
+    this.dialogs.confirm("Are you sure?", "Complete")
+    .then(r => {
+      if(r == 1) {
+        // Complete task
+      }
+    })
+    .catch(err => {
+      
+    });
+  }
+
+  completeSubtask(event, subtaskId) {
+    let subtask : Subtask = this.todo.subtasks[subtaskId];
+
+    if(subtask.done) {
+      subtask.uncomplete();
+    } else {
+      subtask.complete();
+    }
+    this.database.updateSubtask(subtask);
+    this.isDirty = true;
+  }
+
+  timer(todo) {
+    let hoursMinutesSeconds = this.todo.timeLeft.split(":");
+    let hours: any = hoursMinutesSeconds[0];
+    let minutes: any = hoursMinutesSeconds[1];
+    let seconds: any = hoursMinutesSeconds[2];
+
+    if(!minutes || minutes == 0) {
+      hours--;
+      minutes = 60;
+    }
+
+    if(!seconds || seconds == 0) {
+      minutes--;
+      seconds = 60;
+    }
+
+    seconds--;
+
+    if(hours == 0 && minutes == 0 && seconds == 0) {
+      clearInterval(this.refreshIntervalId);
+    }
+
+    todo.timeLeft = hours + ":" + minutes + ":" + seconds;
+  }
+
+  startCountDownTime() {
+    let hoursMinutesSeconds = this.todo.timeLeft.split(":");
+    let hours: any = hoursMinutesSeconds[0];
+    let minutes: any = hoursMinutesSeconds[1];
+    let seconds: any = hoursMinutesSeconds[2];
+    if(hours == 0 && minutes == 0 && seconds == 0) {
+      this.countDownText = "Start!";
+      this.showErrorToast("This task is finished!");
+    } else {
+      if(this.refreshIntervalId) {
+        clearInterval(this.refreshIntervalId);
+        this.refreshIntervalId = null;
+        this.database.updateTodo(this.todo);
+        this.countDownText = "Start!";
+        this.isDirty = true;
+      } else {
+        this.countDownText = "Stop!";
+        this.refreshIntervalId = setInterval(() => {this.timer(this.todo); }, 1000);
+      }
+    }
+  }
+
+  showErrorToast(errorMsg: string) {
+
+    let toast = this.toastCtrl.create({
+      message: errorMsg,
+      duration: 2000,
+      position: 'bottom'
+    });
+
+    toast.present();
+  }
+
+  menuOptionClick(event) {
+    let popover = this.popoverCtrl.create('TodoDetailPopOverPage', {todo: this.todo});
+    //popover.present();
+    popover.present({
+      ev: event
+    });
+
+    popover.onDidDismiss(data => {
+      if(data){
+        let func = data.func;
+
+        console.log(func);
+        if(func == "addSubtask") {
+          this.addSubtask();
+        }
+        else if(func == "deleteTodo") {
+          this.deleteTodo();
+        }
+        else if(func == "editTodo") {
+          this.editTodo();
+        }
+      }
+    });
+  }
+
+  addSubtask() {
+    this.dialogs.prompt("Fill in the name: ", "Add Subtask", ["Add", "Cancel"])
+    .then(data => {
+      console.log(JSON.stringify(data));
+      if(data.buttonIndex == 1 && (data.input1 != "" && data.input1 != null)) {
+        let subtask: Subtask = new Subtask(null, this.todo.id, data.input1, false);
+        this.todo.subtasks.push(subtask);
+        this.database.createSubtask(this.todo.id, subtask);
+        this.isDirty = true;
+      }
     })
     .catch(err => {
       console.log(err);
     });
   }
 
-  editTodo(event, todo) {
-    this.navCtrl.push('TodoEditPage', {
-      todo: todo
-    });
+  deleteTodo() {
+    this.dialogs.confirm("Are you sure?", "Delete", ["Yes", "Cancel"])
+        .then(d => {
+          if(d == 1) {
+            this.database.removeTodo(this.todo)
+            .then(() => {
+              this.isDirty = true;
+              this.navCtrl.pop();
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
   }
 
-  completeSubTask(event, subTaskId) {
-    // if(this.todo.subTasks[subTaskId].done) {
-    //   this.todo.subTasks[subTaskId].done = false;
-    //   this.todo.displayElement =  String(Number(this.todo.displayElement)+1);
-    // } else {
-    //   this.todo.subTasks[subTaskId].done = true;
-    //   this.todo.displayElement =  String(Number(this.todo.displayElement)-1);
-    // }
-  }
-
-  timer(todo) {
-    var hoursMinutesSeconds = this.todo.timeLeft.split(":");
-    var hours: any = hoursMinutesSeconds[0];
-    var minutes: any = hoursMinutesSeconds[1];
-    var seconds: any = hoursMinutesSeconds[2] || 60;
-
-    if(seconds == 0) {
-      minutes--;
-      seconds = 60;
+  editTodo() {
+    console.log("editoto");
+    let data = {
+      todo: this.todo
     }
-    if(minutes == 0) {
-      hours--;
-      minutes = 59;
-    }
-    seconds--;
-
-    todo.timeLeft = hours + ":" + minutes + ":" + seconds;
-
-    // How to save
-    // 1. Active timers continu saving in localfield
-
-
-
+    this.navCtrl.push("TodoEditPage", data);
   }
-
-  startCountDownTime() {
-
-
-    setInterval(() => {this.timer(this.todo); }, 1000);
-}
 
 
 }

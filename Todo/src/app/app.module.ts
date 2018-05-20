@@ -7,9 +7,12 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Database } from '../providers/database';
+import { Database } from '../providers/database/database';
+import { Mapping } from '../providers/database/mappings/mapping'
 import { IonicStorageModule } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
+import { Dialogs } from '@ionic-native/dialogs';
+
 
 
 @NgModule({
@@ -27,9 +30,11 @@ import { SQLite } from '@ionic-native/sqlite';
   ],
   providers: [
     Database,
+    Mapping,
     StatusBar,
     SQLite,
     SplashScreen,
+    Dialogs,
     IonicStorageModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]

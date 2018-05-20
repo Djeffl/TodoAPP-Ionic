@@ -3,7 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage, TodosPage, TodosDonePage, BucketListPage, RoutinesPage } from '../pages/pages'
+import { HomePage, TodosPage, TodosDonePage, RoutinesPage } from '../pages/pages'
 
 @Component({
   templateUrl: 'app.html'
@@ -22,7 +22,6 @@ export class MyApp {
     this.pages = [
       { title: 'Todos', component: TodosPage },
       { title: 'Done', component: TodosDonePage },
-      { title: 'My Bucket List', component: BucketListPage },
       { title: 'My Routines', component: RoutinesPage }
     ];
 
@@ -32,7 +31,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString("#428bca");
       this.splashScreen.hide();
     });
   }

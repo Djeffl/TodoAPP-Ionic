@@ -13,6 +13,6 @@
 export const HomePage = "TodosPage";
 export const TodosPage = "TodosPage";
 export const TodosDonePage = "TodosDonePage";
-export const BucketListPage = "BucketListPage";
 export const RoutinesPage = "RoutinesPage";
-export const WisdomPage = "WisdomPage";
+export const TodosPopOverPage = "TodosPopOverPage";
+//export const WisdomPage = "WisdomPage";

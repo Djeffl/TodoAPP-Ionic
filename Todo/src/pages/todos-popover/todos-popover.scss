@@ -1,0 +1,35 @@
+$categories: (
+ ionic: color($colors, primary),
+ //: #AC282B,
+ communication: #8E8D93,
+ Assignments: #FE4C52,
+ services: #FD8B2D,
+ Time: #FED035,
+ workshop: #69BB7B,
+ Basic: #3BC7C4,
+ documentation: #B16BE3,
+ navigation: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+@each $type, $value in auxiliary-categories() {
+    button[display="true"][type=#{$type}] {
+        ion-icon {
+            color: $value;
+        }
+    }
+}
+
+#typeIcons {
+    text-align:center;
+    button {
+        background: transparent;
+        ion-icon {
+            font-size: 40px;
+            margin: 0 15px 4px;
+        }
+    }
+}
